@@ -1,6 +1,7 @@
 package com.volodymyr.training.dao;
 
 import com.volodymyr.training.db.DumbDB;
+import com.volodymyr.training.exceptions.ElementAlreadyExistException;
 import com.volodymyr.training.exceptions.NoSuchBrandException;
 import com.volodymyr.training.exceptions.NoSuchModelException;
 import com.volodymyr.training.model.Brand;
@@ -31,5 +32,29 @@ public class ModelDAO {
                 .filter(model -> model.getName().equals(modelName))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchBrandException("Brand with id: '" + modelName + "' doesn't exist"));
+    }
+
+    public void addNewModel(int brandID, Model model) {
+        if (!getAllModels(brandID).contains(model)) {
+            getAllModels(brandID).add(model);
+        } else {
+            throw new ElementAlreadyExistException("Such model already exist");
+        }
+    }
+
+    public void updateModel(int brandID, int modelID, Model model) {
+        if (modelID < getAllModels(brandID).size()) {
+            getAllModels(brandID).set(modelID, model);
+        } else {
+            throw new NoSuchModelException("Such model doesn't exist");
+        }
+    }
+
+    public void deleteModel(int brandID, int modelID) {
+        getAllModels(brandID).remove(getModelByID(brandID, modelID));
+    }
+
+    public void deleteModel(int brandID, Model model) {
+        getAllModels(brandID).remove(model);
     }
 }
