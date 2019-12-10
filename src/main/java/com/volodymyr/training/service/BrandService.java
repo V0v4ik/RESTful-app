@@ -9,28 +9,39 @@ import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
+@RequestMapping("/brands")
 public class BrandService {
 
     @Autowired
     private BrandDAO brandDAO;
 
-    @GetMapping("/brands")
+    @GetMapping
     public List<Brand> getBrands() {
         return brandDAO.getAllBrands();
     }
 
-    @PostMapping("/brands")
+    @PostMapping
     public void addBrand(@RequestBody Brand newBrand) {
         brandDAO.addNewBrand(newBrand);
     }
 
-    @GetMapping("/brands/{id}")
+    @GetMapping("/{id}")
     public Brand getBrandByID(@PathVariable Integer id) {
         return brandDAO.getBrandByID(id);
     }
 
-    /*@GetMapping("/brands")
+    /*@RequestMapping("/brands")
     public Brand getBrandByName(@PathParam("name") String name) {
         return brandDAO.getBrandByName(name);
     }*/
+
+    @PutMapping("/{id}")
+    public Brand updateBrand(Brand newBrand, @PathVariable int id) {
+        return brandDAO.updateBrand(newBrand, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBrand(@PathVariable int id) {
+        brandDAO.deleteBrand(id);
+    }
 }

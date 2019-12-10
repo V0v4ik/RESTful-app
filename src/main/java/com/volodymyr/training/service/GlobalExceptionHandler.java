@@ -1,6 +1,8 @@
 package com.volodymyr.training.service;
 
+import com.volodymyr.training.exceptions.ElementAlreadyExistException;
 import com.volodymyr.training.exceptions.NoSuchBrandException;
+import com.volodymyr.training.exceptions.NoSuchModelException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,5 +17,26 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     String brandNotFoundHandler(NoSuchBrandException ex) {
         return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(NoSuchModelException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String modelNotFoundHandler(NoSuchModelException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ElementAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    String elementAlreadyExistHandler(ElementAlreadyExistException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    String unexpectedExceptionHandler(Exception ex) {
+        return "Sorry about unexpected issue. Error log:\n" + ex.getMessage();
     }
 }

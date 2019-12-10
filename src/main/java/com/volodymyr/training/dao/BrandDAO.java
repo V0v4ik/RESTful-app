@@ -30,7 +30,7 @@ public class BrandDAO {
         return DumbDB.getBrands().values().stream()
                 .filter(brand -> brand.getName().equals(name))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchBrandException("Brand with id: '" + name + "' doesn't exist"));
+                .orElseThrow(() -> new NoSuchBrandException("Brand with name: '" + name + "' doesn't exist"));
     }
 
     public void addNewBrand(Brand brand) {
@@ -42,8 +42,15 @@ public class BrandDAO {
         }
     }
 
-    public void updateBrand(Brand brand) {
-        if (!DumbDB.getBrands().containsValue(brand)) {
+    public Brand updateBrand(Brand newBrand, int id) {
+        try {
+            DumbDB.getBrands().replace(id, newBrand);
+            return DumbDB.getBrands().get(id);
+        } catch (NoSuchBrandException ex) {
+            addNewBrand(newBrand);
+            return DumbDB.getBrands().get(DumbDB.getBrands().size() - 1);
+        }
+        /*if (!DumbDB.getBrands().containsValue(brand)) {
             throw new NoSuchBrandException("Such brand doesn't exist");
         } else {
             AtomicInteger id = new AtomicInteger();
@@ -54,11 +61,17 @@ public class BrandDAO {
                         id.set(entry.getKey());
                     });
             DumbDB.getBrands().replace(id.get(), brand);
-        }
+        }*/
     }
 
-    public void deleteBrand(Brand brand) {
-        if (!DumbDB.getBrands().containsValue(brand)) {
+    public void deleteBrand(int id) {
+        try {
+            DumbDB.getBrands().remove(id);
+        } catch (IndexOutOfBoundsException ex) {
+            throw new NoSuchBrandException("Brand with id: '" + id + "' doesn't exist");
+        }
+    }
+        /*if (!DumbDB.getBrands().containsValue(brand)) {
             throw new NoSuchBrandException("Such brand doesn't exist");
         } else {
             AtomicInteger id = new AtomicInteger();
@@ -70,5 +83,5 @@ public class BrandDAO {
                     });
             DumbDB.getBrands().remove(id.get());
         }
-    }
+    }*/
 }

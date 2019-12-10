@@ -4,13 +4,10 @@ import com.volodymyr.training.db.DumbDB;
 import com.volodymyr.training.exceptions.ElementAlreadyExistException;
 import com.volodymyr.training.exceptions.NoSuchBrandException;
 import com.volodymyr.training.exceptions.NoSuchModelException;
-import com.volodymyr.training.model.Brand;
 import com.volodymyr.training.model.Model;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ModelDAO {
@@ -42,9 +39,10 @@ public class ModelDAO {
         }
     }
 
-    public void updateModel(int brandID, int modelID, Model model) {
+    public Model updateModel(int brandID, int modelID, Model model) {
         if (modelID < getAllModels(brandID).size()) {
             getAllModels(brandID).set(modelID, model);
+            return getModelByID(brandID, modelID);
         } else {
             throw new NoSuchModelException("Such model doesn't exist");
         }
