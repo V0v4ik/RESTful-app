@@ -5,7 +5,7 @@ import com.volodymyr.training.model.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,7 +21,7 @@ public class BrandService {
     }
 
     @PostMapping
-    public void addBrand(@RequestBody Brand newBrand) {
+    public void addBrand(@Valid @RequestBody Brand newBrand) {
         brandDAO.addNewBrand(newBrand);
     }
 
@@ -30,13 +30,13 @@ public class BrandService {
         return brandDAO.getBrandByID(id);
     }
 
-    /*@RequestMapping("/brands")
-    public Brand getBrandByName(@PathParam("name") String name) {
+    @RequestMapping
+    public Brand getBrandByName(@RequestParam("name") String name) {
         return brandDAO.getBrandByName(name);
-    }*/
+    }
 
     @PutMapping("/{id}")
-    public Brand updateBrand(Brand newBrand, @PathVariable int id) {
+    public Brand updateBrand(@Valid @RequestBody Brand newBrand, @PathVariable int id) {
         return brandDAO.updateBrand(newBrand, id);
     }
 

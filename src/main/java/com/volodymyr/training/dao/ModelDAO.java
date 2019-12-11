@@ -5,6 +5,7 @@ import com.volodymyr.training.exceptions.ElementAlreadyExistException;
 import com.volodymyr.training.exceptions.NoSuchBrandException;
 import com.volodymyr.training.exceptions.NoSuchModelException;
 import com.volodymyr.training.model.Model;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,14 +13,17 @@ import java.util.List;
 @Component
 public class ModelDAO {
 
+    @Autowired
+    BrandDAO brandDAO;
+
     public List<Model> getAllModels(int brandID) {
-        return DumbDB.getBrands().get(brandID).getModels();
+        return brandDAO.getBrandByID(brandID).getModels();
     }
 
     public Model getModelByID(int brandID, int modelId) {
         try {
             return getAllModels(brandID).get(modelId);
-        } catch (NullPointerException ex) {
+        } catch (IndexOutOfBoundsException ex) {
             throw new NoSuchModelException("Model with id: '" + modelId + "' doesn't exist");
         }
     }

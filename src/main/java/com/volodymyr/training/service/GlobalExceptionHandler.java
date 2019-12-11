@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ValidationException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -38,5 +40,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     String unexpectedExceptionHandler(Exception ex) {
         return "Sorry about unexpected issue. Error log:\n" + ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    String validationExceptionHandler(ValidationException ex) {
+        return ex.getMessage();
     }
 }

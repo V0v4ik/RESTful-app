@@ -5,6 +5,7 @@ import com.volodymyr.training.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,12 +26,12 @@ public class ModelService {
     }
 
     @PostMapping
-    public void addNewModel(@PathVariable int brandId, Model model) {
+    public void addNewModel(@PathVariable int brandId, @Valid @RequestBody Model model) {
         modelDAO.addNewModel(brandId, model);
     }
 
     @PutMapping("/{modelId}")
-    public Model updateModel(@PathVariable int brandId, @PathVariable int modelId, Model newModel) {
+    public Model updateModel(@PathVariable int brandId, @PathVariable int modelId, @Valid @RequestBody Model newModel) {
         //TODO if updating non-existing model add new or throw exception
         return modelDAO.updateModel(brandId, modelId, newModel);
     }
