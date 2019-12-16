@@ -11,5 +11,4 @@ public class RestStudyingApplication {
 		SpringApplication.run(RestStudyingApplication.class, args);
 		DumbDB dumbDB = new DumbDB();
 	}
-
 }

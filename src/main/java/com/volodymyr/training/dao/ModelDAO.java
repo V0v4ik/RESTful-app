@@ -32,7 +32,7 @@ public class ModelDAO {
         return getAllModels(brandID).stream()
                 .filter(model -> model.getName().equals(modelName))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchBrandException("Brand with id: '" + modelName + "' doesn't exist"));
+                .orElseThrow(() -> new NoSuchModelException("Model with name: '" + modelName + "' doesn't exist"));
     }
 
     public void addNewModel(int brandID, Model model) {
@@ -56,7 +56,4 @@ public class ModelDAO {
         getAllModels(brandID).remove(getModelByID(brandID, modelID));
     }
 
-    public void deleteModel(int brandID, Model model) {
-        getAllModels(brandID).remove(model);
-    }
 }

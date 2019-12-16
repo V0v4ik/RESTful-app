@@ -3,41 +3,37 @@ package com.volodymyr.training.service;
 import com.volodymyr.training.dao.ModelDAO;
 import com.volodymyr.training.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@RestController
-@RequestMapping("/brands/{brandId}/models")
+@Service
 public class ModelService {
 
     @Autowired
     private ModelDAO modelDAO;
 
-    @GetMapping
-    public List<Model> getAllModels(@PathVariable int brandId) {
+    public List<Model> getAllModels(int brandId) {
         return modelDAO.getAllModels(brandId);
     }
 
-    @GetMapping("/{modelId}")
-    public Model getModel(@PathVariable int brandId, @PathVariable int modelId) {
+    public Model getModelByID(int brandId, int modelId) {
         return modelDAO.getModelByID(brandId, modelId);
     }
 
-    @PostMapping
-    public void addNewModel(@PathVariable int brandId, @Valid @RequestBody Model model) {
+    public Model getModelByName(int brandId, String modelName) {
+        return modelDAO.getModelByName(brandId, modelName);
+    }
+
+    public void addNewModel(int brandId, Model model) {
         modelDAO.addNewModel(brandId, model);
     }
 
-    @PutMapping("/{modelId}")
-    public Model updateModel(@PathVariable int brandId, @PathVariable int modelId, @Valid @RequestBody Model newModel) {
-        //TODO if updating non-existing model add new or throw exception
+    public Model updateModel(int brandId, int modelId, Model newModel) {
         return modelDAO.updateModel(brandId, modelId, newModel);
     }
 
-    @DeleteMapping("/{modelId}")
-    public void deleteModel(@PathVariable int brandId, @PathVariable int modelId) {
+    public void deleteModel(int brandId, int modelId) {
         modelDAO.deleteModel(brandId, modelId);
     }
 }

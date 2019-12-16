@@ -3,16 +3,17 @@ package com.volodymyr.training.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Model {
 
-    @NonNull()
     @NotEmpty(message = "If you don't know how to name it, just call it like some fruit")
     private String name;
 
