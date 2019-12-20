@@ -41,7 +41,6 @@ public class ModelController {
 
     @PutMapping("/{modelId}")
     public Model updateModel(@PathVariable int brandId, @PathVariable int modelId, @Valid @RequestBody Model newModel) {
-        //TODO if updating non-existing model add new or throw exception
         return modelService.updateModel(brandId, modelId, newModel);
     }
 

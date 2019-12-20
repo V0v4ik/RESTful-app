@@ -7,6 +7,7 @@ import com.volodymyr.training.exceptions.NoSuchModelException;
 import com.volodymyr.training.model.ValidationErrorResponse;
 import com.volodymyr.training.model.Violation;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,43 +27,42 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(NoSuchBrandException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String brandNotFoundHandler(NoSuchBrandException ex) {
+    public String brandNotFoundHandler(NoSuchBrandException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(NoSuchModelException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String modelNotFoundHandler(NoSuchModelException ex) {
+    public String modelNotFoundHandler(NoSuchModelException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(ElementAlreadyExistException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    String elementAlreadyExistHandler(ElementAlreadyExistException ex) {
+    public String elementAlreadyExistHandler(ElementAlreadyExistException ex) {
         return ex.getMessage();
     }
 
-    //TODO ask why it doesn't work
     @ResponseBody
-    @ExceptionHandler(JsonParseException.class)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String JsonParseExceptionHandler(JsonParseException ex) {
+    public String JsonParseExceptionHandler(HttpMessageNotReadableException ex) {
         return ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    String unexpectedExceptionHandler(Exception ex) {
+    public String unexpectedExceptionHandler(Exception ex) {
         return "Sorry about unexpected issue. Error log:\n" + ex.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ValidationErrorResponse constraintValidationExceptionHandler(
+    public ValidationErrorResponse constraintValidationExceptionHandler(
             ConstraintViolationException ex) {
         ValidationErrorResponse response = new ValidationErrorResponse();
         for (ConstraintViolation violation : ex.getConstraintViolations()) {
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ValidationErrorResponse methodArgumentNotValidExceptionHandler(
+    public ValidationErrorResponse methodArgumentNotValidExceptionHandler(
             MethodArgumentNotValidException ex) {
         ValidationErrorResponse response = new ValidationErrorResponse();
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ValidationErrorResponse methodArgumentTypeMismatchExceptionHandler(
+    public ValidationErrorResponse methodArgumentTypeMismatchExceptionHandler(
             MethodArgumentTypeMismatchException ex) {
         ValidationErrorResponse response = new ValidationErrorResponse();
         response.getViolations().add(
@@ -99,7 +99,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ValidationErrorResponse missingServletRequestParameterExceptionHandler(
+    public ValidationErrorResponse missingServletRequestParameterExceptionHandler(
             MissingServletRequestParameterException ex) {
         ValidationErrorResponse response = new ValidationErrorResponse();
         response.getViolations().add(
@@ -110,7 +110,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ValidationErrorResponse bindExceptionHandler(
+    public ValidationErrorResponse bindExceptionHandler(
             BindException ex) {
         ValidationErrorResponse response = new ValidationErrorResponse();
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {

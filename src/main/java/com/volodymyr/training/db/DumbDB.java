@@ -14,7 +14,6 @@ public class DumbDB {
     @Getter
     private static Map<Integer, Brand> brands = new HashMap<>();
 
-    //TODO Arrays.asList creates immutable collection
     public DumbDB() {
         brands.put(0, new Brand("Ford", "USA", new ArrayList<Model>() {
             {
