@@ -12,8 +12,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/brands/{brandId}/models")
-public class ModelController {
+@RequestMapping("/brands/{brandId}/models/admin")
+public class ModelAdminController {
 
     @Autowired
     private ModelDAO modelDAO;
@@ -21,18 +21,19 @@ public class ModelController {
     @Autowired
     private ModelService modelService;
 
-    @JsonView(Views.Public.class)
+    @JsonView(Views.Admin.class)
     @GetMapping
     public List<Model> getAllModels(@PathVariable int brandId) {
         return modelService.getAllModels(brandId);
     }
 
-    @JsonView(Views.Public.class)
+    @JsonView(Views.Admin.class)
     @GetMapping("/{modelId}")
     public Model getModelByID(@PathVariable int brandId, @PathVariable int modelId) {
         return modelService.getModelByID(brandId, modelId);
     }
 
+    @JsonView(Views.Public.class)
     @GetMapping(params = {"name"})
     public Model getModelByName(@PathVariable int brandId, @RequestParam String name) {
         return modelService.getModelByName(brandId, name);

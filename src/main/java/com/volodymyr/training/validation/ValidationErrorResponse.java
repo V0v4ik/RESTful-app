@@ -1,5 +1,6 @@
-package com.volodymyr.training.model;
+package com.volodymyr.training.validation;
 
+import com.volodymyr.training.model.Violation;
 import lombok.Data;
 
 import java.util.ArrayList;

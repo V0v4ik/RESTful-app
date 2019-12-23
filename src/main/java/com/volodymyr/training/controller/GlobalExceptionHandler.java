@@ -1,10 +1,9 @@
 package com.volodymyr.training.controller;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.volodymyr.training.exceptions.ElementAlreadyExistException;
 import com.volodymyr.training.exceptions.NoSuchBrandException;
 import com.volodymyr.training.exceptions.NoSuchModelException;
-import com.volodymyr.training.model.ValidationErrorResponse;
+import com.volodymyr.training.validation.ValidationErrorResponse;
 import com.volodymyr.training.model.Violation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
