@@ -45,22 +45,9 @@ public class BrandDAO {
         try {
             DumbDB.getBrands().replace(id, newBrand);
             return DumbDB.getBrands().get(id);
-        } catch (NoSuchBrandException ex) {
-            addNewBrand(newBrand);
-            return DumbDB.getBrands().get(DumbDB.getBrands().size() - 1);
+        } catch (NullPointerException ex) {
+            throw new NoSuchBrandException("You can't update unexisting brand");
         }
-        /*if (!DumbDB.getBrands().containsValue(brand)) {
-            throw new NoSuchBrandException("Such brand doesn't exist");
-        } else {
-            AtomicInteger id = new AtomicInteger();
-            DumbDB.getBrands().entrySet().stream()
-                    .filter(entry -> entry.getValue().equals(brand))
-                    .findFirst()
-                    .ifPresent(entry -> {
-                        id.set(entry.getKey());
-                    });
-            DumbDB.getBrands().replace(id.get(), brand);
-        }*/
     }
 
     public void deleteBrand(int id) {

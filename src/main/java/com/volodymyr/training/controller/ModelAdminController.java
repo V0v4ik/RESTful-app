@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.volodymyr.training.dao.ModelDAO;
 import com.volodymyr.training.model.Model;
 import com.volodymyr.training.service.ModelService;
+import com.volodymyr.training.validation.CreateValidationGroup;
+import com.volodymyr.training.validation.UpdateValidationGroup;
 import com.volodymyr.training.validation.Views;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,12 +43,14 @@ public class ModelAdminController {
     }
 
     @PostMapping
-    public void addNewModel(@PathVariable int brandId, @Valid @RequestBody Model model) {
+    public void addNewModel(@PathVariable int brandId,
+                            @Validated(CreateValidationGroup.class) @RequestBody Model model) {
         modelService.addNewModel(brandId, model);
     }
 
     @PutMapping("/{modelId}")
-    public Model updateModel(@PathVariable int brandId, @PathVariable int modelId, @Valid @RequestBody Model newModel) {
+    public Model updateModel(@PathVariable int brandId, @PathVariable int modelId,
+                             @Validated(UpdateValidationGroup.class) @RequestBody Model newModel) {
         return modelService.updateModel(brandId, modelId, newModel);
     }
 

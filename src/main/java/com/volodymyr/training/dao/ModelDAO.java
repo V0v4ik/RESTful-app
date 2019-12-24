@@ -1,8 +1,6 @@
 package com.volodymyr.training.dao;
 
-import com.volodymyr.training.db.DumbDB;
 import com.volodymyr.training.exceptions.ElementAlreadyExistException;
-import com.volodymyr.training.exceptions.NoSuchBrandException;
 import com.volodymyr.training.exceptions.NoSuchModelException;
 import com.volodymyr.training.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +19,10 @@ public class ModelDAO {
     }
 
     public Model getModelByID(int brandID, int modelId) {
-        try {
-            return getAllModels(brandID).get(modelId);
-        } catch (IndexOutOfBoundsException ex) {
-            throw new NoSuchModelException("Model with id: '" + modelId + "' doesn't exist");
-        }
+        return getAllModels(brandID).stream()
+                .filter(model -> model.getId()==(modelId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchModelException("Model with id: '" + modelId + "' doesn't exist"));
     }
 
     public Model getModelByName(int brandID, String modelName) {
@@ -37,6 +34,7 @@ public class ModelDAO {
 
     public void addNewModel(int brandID, Model model) {
         if (!getAllModels(brandID).contains(model)) {
+            model.setId(getAllModels(brandID).size());
             getAllModels(brandID).add(model);
         } else {
             throw new ElementAlreadyExistException("Such model already exist");
@@ -44,12 +42,9 @@ public class ModelDAO {
     }
 
     public Model updateModel(int brandID, int modelID, Model model) {
-        if (modelID < getAllModels(brandID).size()) {
-            getAllModels(brandID).set(modelID, model);
-            return getModelByID(brandID, modelID);
-        } else {
-            throw new NoSuchModelException("Such model doesn't exist");
-        }
+        Model oldModel = getModelByID(brandID, modelID);
+        model.setId(oldModel.getId());
+        return model;
     }
 
     public void deleteModel(int brandID, int modelID) {
